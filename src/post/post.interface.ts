@@ -5,11 +5,10 @@ export interface Post {
   id: number;
   title: string;
   content: string;
-  author: string; // Assuming author is the name of the user
-  publicationDate: Date;
   tags: string[];
-  authorUser: User; // The User object representing the author
-  comments?: Comment[]; // The comments field is marked as optional using "?"
+  user?: User;
+  userId: number;
+  comments?: Comment[];
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
 }
