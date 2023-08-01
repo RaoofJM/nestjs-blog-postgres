@@ -4,9 +4,10 @@ import { User } from 'src/user/user.interface';
 export interface Comment {
   id: number;
   content: string;
-  author: string;
-  post: Post;
-  authorUser: User;
-  createdAt: Date;
-  updatedAt: Date;
+  user?: User;
+  userId: number;
+  post?: Post;
+  postId: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

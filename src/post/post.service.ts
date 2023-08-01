@@ -5,16 +5,12 @@ import {
 } from '@nestjs/common';
 import { PostRepository } from './post.respository';
 import { CreatePostDto } from './dto/createPost.dto';
-import { UserRepository } from 'src/user/user.repository';
 import { User } from 'src/user/user.interface';
 import { UpdatePostDto } from './dto/updatePost.dto';
 
 @Injectable()
 export class PostService {
-  constructor(
-    private readonly postRepository: PostRepository,
-    private readonly userRepository: UserRepository,
-  ) {}
+  constructor(private readonly postRepository: PostRepository) {}
 
   async create(data: CreatePostDto, user: User) {
     const post = await this.postRepository.create({
