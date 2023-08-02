@@ -7,6 +7,7 @@ import { PostRepository } from './post.respository';
 import { CreatePostDto } from './dto/createPost.dto';
 import { User } from 'src/user/user.interface';
 import { UpdatePostDto } from './dto/updatePost.dto';
+import { FindAllPostDto } from './dto/findAll.dto';
 
 @Injectable()
 export class PostService {
@@ -37,7 +38,7 @@ export class PostService {
     return post;
   }
 
-  async findMany(user: User) {
+  async findMany(data: FindAllPostDto, user: User) {
     const isAdmin = user.role.includes('ADMIN');
 
     if (!isAdmin)
@@ -45,7 +46,7 @@ export class PostService {
         "You don't have enough access to all the posts",
       );
 
-    return await this.postRepository.findAll();
+    return await this.postRepository.findAll(data.page, data.limit);
   }
 
   async delete(id: number, user: User) {

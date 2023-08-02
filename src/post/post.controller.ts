@@ -15,6 +15,7 @@ import { UpdatePostDto } from './dto/updatePost.dto';
 import { PostService } from './post.service';
 import { JwtAuthGuard } from 'src/guard/jwtAuth.guard';
 import { User } from 'src/user/user.interface';
+import { FindAllPostDto } from './dto/findAll.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('posts')
@@ -22,9 +23,12 @@ export class PostController {
   constructor(private postService: PostService) {}
 
   @Get('/all')
-  async getPosts(@Request() req) {
+  async getPosts(@Body() body: FindAllPostDto, @Request() req) {
     const user = req.user as User;
-    const posts = await this.postService.findMany(user);
+    const page = body.page ? parseInt(body.page.toString()) : 1;
+    const limit = body.limit ? parseInt(body.limit.toString()) : 5;
+
+    const posts = await this.postService.findMany({ page, limit }, user);
     return posts;
   }
 

@@ -20,8 +20,12 @@ export class PostRepository {
     });
   }
 
-  async findAll(): Promise<Post[]> {
-    return this.prisma.post.findMany();
+  async findAll(page = 1, limit = 5): Promise<Post[]> {
+    const skip = (page - 1) * limit;
+    return this.prisma.post.findMany({
+      skip,
+      take: limit,
+    });
   }
 
   async findOne(id: number): Promise<Post | null> {
