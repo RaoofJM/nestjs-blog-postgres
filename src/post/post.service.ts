@@ -8,10 +8,14 @@ import { CreatePostDto } from './dto/createPost.dto';
 import { User } from 'src/user/user.interface';
 import { UpdatePostDto } from './dto/updatePost.dto';
 import { FindAllPostDto } from './dto/findAll.dto';
+import { PostCacheRepository } from 'src/cache/repository/postCache.repository';
 
 @Injectable()
 export class PostService {
-  constructor(private readonly postRepository: PostRepository) {}
+  constructor(
+    private readonly postRepository: PostRepository,
+    private readonly postCacheRepository: PostCacheRepository,
+  ) {}
 
   async create(data: CreatePostDto, user: User) {
     const post = await this.postRepository.create({
@@ -24,11 +28,15 @@ export class PostService {
   }
 
   async findOne(id: number, user: User) {
+    const cachedPost = await this.postCacheRepository.getPost(id);
+    if (cachedPost) return cachedPost;
+
     const post = await this.postRepository.findOne(id);
     if (!post) throw new NotFoundException('No post found');
 
+    await this.postCacheRepository.savePost(post);
+
     const isAdmin = user.role.includes('ADMIN');
-    console.log(user);
 
     if (user.id !== post.userId && !isAdmin)
       throw new UnauthorizedException(

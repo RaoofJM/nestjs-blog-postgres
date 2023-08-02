@@ -5,6 +5,7 @@ import { CommentModule } from './comment/comment.module';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { throttlerConfig } from './config/throttler.config';
+import { CacheModule } from './cache/redis.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { throttlerConfig } from './config/throttler.config';
     PostModule,
     CommentModule,
     AuthModule,
+    CacheModule,
   ],
 })
 export class AppModule {}
