@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/register.dto';
 import { UserRepository } from '../user/user.repository';
-import { LoginDto } from './DTO/login.dto';
+import { LoginDto } from './dto/login.dto';
 import { compare } from 'bcrypt';
 
 @Injectable()

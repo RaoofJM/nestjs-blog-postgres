@@ -2,7 +2,7 @@ import { createClient } from 'redis';
 import Configs from '../config/configuration';
 import { logger } from '../logging/logger.service';
 
-const redisURL = `redis://localhost:${Configs().REDIS_PORT}`;
+const redisURL = `redis://${Configs().REDIS_HOST}:${Configs().REDIS_PORT}`;
 
 const client = createClient({ url: redisURL });
 
