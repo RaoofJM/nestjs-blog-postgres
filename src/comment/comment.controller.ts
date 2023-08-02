@@ -15,16 +15,19 @@ import { UpdateCommentDto } from './dto/updateComment.dto';
 import { CommentService } from './comment.service';
 import { JwtAuthGuard } from 'src/guard/jwtAuth.guard';
 import { User } from 'src/user/user.interface';
+import { Roles } from 'src/decorator/role.decorator';
+import { RoleGuard } from 'src/guard/role.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('comments')
 export class CommentController {
   constructor(private commentService: CommentService) {}
 
+  @Roles('ADMIN')
+  @UseGuards(RoleGuard)
   @Get('/all')
   async getComments(@Request() req) {
-    const user = req.user as User;
-    const comments = await this.commentService.findMany(user);
+    const comments = await this.commentService.findMany();
     return comments;
   }
 

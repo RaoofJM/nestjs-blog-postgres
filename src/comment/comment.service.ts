@@ -43,14 +43,7 @@ export class CommentService {
     return comment;
   }
 
-  async findMany(user: User) {
-    const isAdmin = user.role.includes('ADMIN');
-
-    if (!isAdmin)
-      throw new UnauthorizedException(
-        "You don't have enough access to all the comments",
-      );
-
+  async findMany() {
     return await this.commentRepository.findAll();
   }
 
