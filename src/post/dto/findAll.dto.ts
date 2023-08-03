@@ -1,11 +1,14 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 
 export class FindAllPostDto {
   @IsString()
   @IsOptional()
-  page: number;
+  @ApiProperty({ type: String, description: 'page - default: 1' })
+  page?: number;
 
   @IsString()
   @IsOptional()
-  limit: number;
+  @ApiProperty({ type: String, description: 'limit - default: 5' })
+  limit?: number;
 }

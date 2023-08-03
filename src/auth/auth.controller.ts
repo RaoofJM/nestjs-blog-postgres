@@ -14,7 +14,9 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from 'src/guard/jwtAuth.guard';
 import { RoleGuard } from 'src/guard/role.guard';
 import { Roles } from 'src/decorator/role.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -42,6 +44,7 @@ export class AuthController {
 
   @Roles('USER')
   @UseGuards(JwtAuthGuard, RoleGuard)
+  @ApiBearerAuth()
   @Get('/profile')
   async profile(@Request() req) {
     return req.user;

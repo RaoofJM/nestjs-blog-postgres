@@ -16,8 +16,11 @@ import { PostService } from './post.service';
 import { JwtAuthGuard } from 'src/guard/jwtAuth.guard';
 import { User } from 'src/user/user.interface';
 import { FindAllPostDto } from './dto/findAll.dto';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@ApiTags('post')
 @Controller('posts')
 export class PostController {
   constructor(private postService: PostService) {}
@@ -33,6 +36,7 @@ export class PostController {
   }
 
   @Get('/:id')
+  @ApiParam({ name: 'id', required: true })
   async getPost(@Param('id', ParseIntPipe) id, @Request() req) {
     const user = req.user as User;
     const post = await this.postService.findOne(id, user);
@@ -47,6 +51,7 @@ export class PostController {
   }
 
   @Put('/update/:id')
+  @ApiParam({ name: 'id', required: true })
   async updatePost(
     @Body() bdoy: UpdatePostDto,
     @Param('id', ParseIntPipe) id,
@@ -58,6 +63,7 @@ export class PostController {
   }
 
   @Delete('/delete/:id')
+  @ApiParam({ name: 'id', required: true })
   async deletePost(@Param('id', ParseIntPipe) id, @Request() req) {
     const user = req.user as User;
     const post = await this.postService.delete(id, user);

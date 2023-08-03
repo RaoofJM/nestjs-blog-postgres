@@ -17,8 +17,11 @@ import { JwtAuthGuard } from 'src/guard/jwtAuth.guard';
 import { User } from 'src/user/user.interface';
 import { Roles } from 'src/decorator/role.decorator';
 import { RoleGuard } from 'src/guard/role.guard';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@ApiTags('comment')
 @Controller('comments')
 export class CommentController {
   constructor(private commentService: CommentService) {}
@@ -32,6 +35,7 @@ export class CommentController {
   }
 
   @Get('/:id')
+  @ApiParam({ name: 'id', required: true })
   async getComment(@Param('id', ParseIntPipe) id, @Request() req) {
     const user = req.user as User;
     const comment = await this.commentService.findOne(id, user);
@@ -47,6 +51,7 @@ export class CommentController {
   }
 
   @Put('/update/:id')
+  @ApiParam({ name: 'id', required: true })
   async updateComment(
     @Body() bdoy: UpdateCommentDto,
     @Param('id', ParseIntPipe) id,
@@ -58,6 +63,7 @@ export class CommentController {
   }
 
   @Delete('/delete/:id')
+  @ApiParam({ name: 'id', required: true })
   async deleteComment(@Param('id', ParseIntPipe) id, @Request() req) {
     const user = req.user as User;
     const comment = await this.commentService.delete(id, user);
